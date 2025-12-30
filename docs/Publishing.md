@@ -281,3 +281,213 @@ If you want, next I can:
 * or help you **deprecate MV2 cleanly later** when Firefox fully enables MV3
 
 Just say the word.
+
+---
+
+Publishing to **Microsoft Edge Add-ons** is thankfully the *easiest* of the three. Since you already have a **Chrome MV3 build**, Edge will accept it with **no code changes**.
+
+Below is the **exact step-by-step**, tuned to your project.
+
+---
+
+# Publish on Microsoft Edge Add-ons (step-by-step)
+
+## 1️⃣ Use your **Chrome build**
+
+Edge is Chromium-based.
+
+👉 Use **the same ZIP you built for Chrome**
+No Edge-specific manifest needed.
+
+```bash
+npm run build:chrome
+```
+
+This gives you:
+
+```
+dist/chrome/
+└── extract-meaning-words-chrome-v0.1.0.zip
+```
+
+That ZIP is what you upload to Edge.
+
+---
+
+## 2️⃣ Create a Microsoft Partner account
+
+Go to:
+
+👉 [https://partner.microsoft.com/dashboard/microsoftedge](https://partner.microsoft.com/dashboard/microsoftedge)
+
+* Sign in with a Microsoft account
+* Accept the Edge Add-ons developer agreement
+* **No fee** (unlike Chrome)
+
+---
+
+## 3️⃣ Submit the extension
+
+Click **“New extension”** → upload:
+
+```
+extract-meaning-words-chrome-v0.1.0.zip
+```
+
+Edge will automatically:
+
+* Detect MV3
+* Parse permissions
+* Validate the manifest
+
+---
+
+## 4️⃣ Fill out the listing (important fields)
+
+### Name
+
+Use the **same name** as Chrome/Firefox for consistency, e.g.:
+
+> **Word Meaning History**
+
+(Strongly recommended.)
+
+---
+
+### Short description
+
+(max ~150 chars)
+
+> Extracts all “<word> meaning” searches from your browser history.
+> Supports Google, Bing, and DuckDuckGo.
+
+---
+
+### Long description
+
+You can reuse the Chrome one verbatim:
+
+> This extension scans your browser history to extract searches that end in “meaning”, such as “altruism meaning” or “modus operandi meaning”.
+>
+> It supports Google, Bing, and DuckDuckGo and allows exporting the extracted words as CSV or JSON.
+>
+> All processing happens locally. No data is transmitted or collected.
+
+---
+
+### Category
+
+Choose one:
+
+* **Productivity**
+* **Developer Tools**
+
+(Productivity is usually safer.)
+
+---
+
+### Screenshots (required)
+
+Same screenshots as Chrome:
+
+* Popup before scan
+* Popup after scan
+
+---
+
+## 5️⃣ Permissions explanation (very important)
+
+Edge *will* flag `history`.
+
+When asked “Why does your extension need this permission?”, use this exact wording:
+
+> The extension needs access to browsing history in order to read search result URLs and extract queries ending in the word “meaning”.
+> All processing happens locally, and no data is transmitted or collected.
+
+This satisfies Edge reviewers.
+
+---
+
+## 6️⃣ Privacy section
+
+Edge is strict but simple.
+
+Set:
+
+* **Collects personal data?** → ❌ No
+* **Shares data with third parties?** → ❌ No
+* **Data sold?** → ❌ No
+
+If there’s a free-text field, paste your privacy policy text.
+
+---
+
+## 7️⃣ Submit for review
+
+Click **Submit**.
+
+### Review time
+
+* Usually **a few hours**
+* Sometimes **same day**
+* Much faster than Chrome, generally smoother than Firefox
+
+You’ll get an email when it’s live.
+
+---
+
+# Optional but recommended tweaks for Edge
+
+### A) Add a `short_name` (nice polish)
+
+Edge sometimes shows this in compact UI.
+
+Add to **Chrome manifest only**:
+
+```json
+"short_name": "Word Meaning"
+```
+
+Not required, but nice.
+
+---
+
+### B) Remove unused permissions
+
+If you’re not using them yet, remove:
+
+```json
+"tabs",
+"alarms"
+```
+
+Edge reviewers like minimal permission sets.
+
+---
+
+## 8️⃣ Final cross-store compatibility summary
+
+| Store            | Manifest | Build used    | Notes                               |
+| ---------------- | -------- | ------------- | ----------------------------------- |
+| Firefox AMO      | MV2      | Firefox build | Needs `data_collection_permissions` |
+| Chrome Web Store | MV3      | Chrome build  | $5 fee                              |
+| Edge Add-ons     | MV3      | Chrome build  | Free, easiest                       |
+
+---
+
+## TL;DR (Edge)
+
+1. `npm run build:chrome`
+2. Upload the Chrome ZIP to Edge Add-ons
+3. Explain `history` permission clearly
+4. Submit → wait a few hours
+
+---
+
+If you want, next I can:
+
+* review your **Edge listing text** line-by-line,
+* help you **sync versions** across all stores,
+* or plan the **MV2 → MV3 Firefox migration** cleanly for later.
+
+Just say what’s next.
